@@ -1,0 +1,313 @@
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #f0f0f0;
+    margin: 0;
+    padding: 20px;
+}
+
+#menu-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+#calorie-box {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+    margin-bottom: 30px;
+}
+
+input[type="number"] {
+    width: 80%;
+    padding: 10px;
+    margin: 10px auto;
+    border: 2px solid #ccc;
+    border-radius: 5px;
+    transition: border-color 0.3s, box-shadow 0.3s;
+    font-size: 16px;
+}
+
+input[type="number"]:focus {
+    border-color: #4CAF50;
+    box-shadow: 0 0 5px rgba(76, 175, 80, 0.5);
+    outline: none;
+}
+
+label {
+    font-weight: bold;
+    margin-right: 10px;
+}
+
+#calorie-input {
+    width: 70%;
+    padding: 12px;
+    margin: 15px 0;
+    border: 2px solid #ccc;
+    border-radius: 5px;
+    transition: border-color 0.3s;
+}
+
+#calorie-input:focus {
+    border-color: #4CAF50;
+    outline: none;
+}
+
+#generate-button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 12px 24px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+    font-size: 16px;
+}
+
+#generate-button:hover {
+    background-color: #45a049;
+    transform: scale(1.05);
+}
+
+#menu-container {
+    display: flex;
+    overflow-x: auto;
+    padding: 20px 0;
+    gap: 20px;
+}
+
+.food-item {
+    display: flex;
+    flex-direction: column;
+    background-color: rgba(255, 255, 255, 0.95);
+    border-radius: 15px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    padding: 20px;
+    min-width: 220px;
+    transition: transform 0.3s;
+}
+
+.food-item:hover {
+    transform: scale(1.05);
+    background-color: #0056b3;
+}
+
+.traits-list {
+    margin: 10px 0;
+}
+
+.calories-info {
+    font-weight: bold;
+    color: #4CAF50;
+}
+
+.contains-list {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+.fade {
+    animation: fade-out 0.5s forwards;
+}
+
+.fade-in {
+    animation: fade-in 0.5s forwards;
+}
+
+@keyframes fade-out {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
+}
+
+@keyframes fade-in {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+.dining-hall-container {
+    position: relative;
+    display: inline-block;
+}
+
+#dining-hall-select {
+    font-size: 16px;
+    padding: 10px;
+    border: 2px solid #007BFF;
+    border-radius: 5px;
+    background-color: #f8f9fa;
+    color: #343a40;
+    cursor: pointer;
+    width: 200px;
+    transition: all 0.3s ease;
+}
+
+.centered-options {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(255, 255, 255, 0.95);
+    padding: 80px;
+    border-radius: 15px;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+    display: none;
+    z-index: 100;
+}
+
+.dining-hall-option {
+    text-align: center;
+    margin: 10px 0;
+}
+
+.dining-hall-option img {
+    max-width: 800px;
+    border-radius: 10px;
+}
+
+.show {
+    display: block;
+}
+
+.hide {
+    display: none;
+}
+
+#dining-hall-options p {
+    font-size: 18px;
+    margin-top: 10px;
+}
+
+
+.dining-hall-select:hover {
+    border-color: #0056b3;
+    transform: scale(1.1);
+}
+
+.dining-hall-select:focus {
+    outline: none;
+    border-color: #0056b3;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+#food-button {
+    background-color: #007BFF;
+    color: white;
+    padding: 12px 24px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+    font-size: 16px;
+}
+
+input[type="text"] {
+    width: 50%;
+    padding: 10px;
+    margin: 10px auto;
+    border: 2px solid #ccc;
+    border-radius: 5px;
+    transition: border-color 0.3s, box-shadow 0.3s;
+    font-size: 16px;
+}
+
+input[type="text"]:focus {
+    border-color: #4CAF50;
+    box-shadow: 0 0 5px rgba(76, 175, 80, 0.5);
+    outline: none;
+}
+
+.remove-button {
+    background-color: #ff1313;
+    color: rgb(255, 255, 255);
+    padding: 8px 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+    font-size: 14px;
+}
+
+#allergens,
+#filter-list,
+#nutrition-facts,
+#currently-ate,
+#nutrition-input {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+    margin-bottom: 30px;
+    animation: fade-in 4s ease-in;
+}
+
+.hide-button {
+    background-color: #ff1313;
+    color: rgb(255, 255, 255);
+    padding: 8px 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+    font-size: 14px;
+}
+
+.show-button {
+    background-color: #2f843e;
+    color: rgb(255, 255, 255);
+    padding: 8px 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+    font-size: 14px;
+}
+
+@keyframes hide {
+    from {
+        transform: translateY(0);
+    }
+    to {
+        transform: translateY(100vh);
+    }
+}
+
+.hide {
+    animation: hide 1s ease;
+}
+
+.show-button:hover {
+    background-color: #45a049;
+    transform: scale(1.2);
+}
+
+.hide-button:hover {
+    background-color: #700000;
+    transform: scale(1.2);
+}
+#food-button:hover {
+    background-color: #3d0059;
+    transform: scale(1.2);
+}
+
+@keyframes fade-out {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+        display: none;
+    }
+}
+
+.fade-out {
+    animation: fade-out 5s forwards ease-in;
+    pointer-events: none; /* Prevent interaction during fading */
+}

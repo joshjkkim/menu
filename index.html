@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dining Hall Menu</title>
+    <link rel="stylesheet" href="frontend/style.css"> 
+</head>
+<body>
+    <div id="menu-header">
+        <h1>Today's Menu</h1>
+        <div>
+            <div class="dining-hall-container">
+                <select id="dining-hall-select" onchange="showDiningHallOptions()">
+                    <option value="">Select Dining Hall</option>
+                    <option value="south-quad">South Quad</option>
+                    <option value="east-quad">East Quad</option>
+                    <option value="north-quad">North Quad</option>
+                    <option value="bursley">Bursley</option>
+                    <option value="mosher-jordan">MoJo</option>
+                    <option value="markley">Markley</option>
+                </select>
+
+                <div id="dining-hall-options" class="centered-options hide">
+                    <div class="dining-hall-option" id="south-quad">
+                        <img src="/assets/southquad.jpg" alt="South Quad Img">
+                        <p>South Quad</p>
+                    </div>
+                    <div class="dining-hall-option" id="east-quad">
+                        <img src="/assets/eastquad.jpg" alt="East Quad Img">
+                        <p>East Quad</p>
+                    </div>
+                    <div class="dining-hall-option" id="north-quad">
+                        <img src="/assets/northquad.jpg" alt="North Quad Img">
+                        <p>North Quad</p>
+                    </div>
+                    <div class="dining-hall-option" id="bursley">
+                        <img src="/assets/bursley.jpg" alt="Bursley Img">
+                        <p>Bursley</p>
+                    </div>
+                    <div class="dining-hall-option" id="mosher-jordan">
+                        <img src="/assets/mosherjordan.jpg" alt="MoJo Img">
+                        <p>MoJo</p>
+                    </div>
+                    <div class="dining-hall-option" id="markley">
+                        <img src="/assets/markley.jpg" alt="Markley Img">
+                        <p>Markley</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div id="filter-list">
+    <div id="dietary-traits">
+        <h2>Dietary Restrictions</h2>
+        <label>
+            <input type="checkbox" id="halal" /> Halal
+        </label>
+        <label>
+            <input type="checkbox" id="vegan" /> Vegan
+        </label>
+        <label>
+            <input type="checkbox" id="vegetarian" /> Vegetarian
+        </label>
+        <label>
+            <input type="checkbox" id="kosher" /> Kosher
+        </label>
+        <label>
+            <input type="checkbox" id="gluten-free" /> Gluten Free
+        </label>
+    </div>
+    </div>
+
+    <div id="allergens">
+        <h2>Contains/Allergens: </h2>
+        <label>
+            <input type="checkbox" id="milk" /> Milk
+        </label>
+
+        <label>
+            <input type="checkbox" id="oats" /> Oats
+        </label>
+
+        <label>
+            <input type="checkbox" id="soy" /> Soy
+        </label>
+
+        <label>
+            <input type="checkbox" id="eggs" /> Eggs
+        </label>
+
+        <label>
+            <input type="checkbox" id="wheat-barley-rye" /> Wheat/Barley/Rye
+        </label>
+
+        <label>
+            <input type="checkbox" id="tree-nuts" /> Tree Nuts
+        </label>
+
+        <label>
+            <input type="checkbox" id="fish" /> Fish
+        </label>
+
+        <label>
+            <input type="checkbox" id="alcohol" /> Alcohol
+        </label>
+
+        <label>
+            <input type="checkbox" id="sesame-seed" /> Sesame Seed
+        </label>
+
+    </div>
+
+    <div id="nutrition-input">
+        <div>
+            <label for="max-sodium">Max Sodium (mg):</label>
+            <input type="number" id="max-sodium" placeholder="e.g., 2000" />
+        </div>
+        <div>
+            <label for="max-cholesterol">Max Cholesterol (mg):</label>
+            <input type="number" id="max-cholesterol" placeholder="e.g., 300" />
+        </div>
+        <div>
+            <label for="max-sugars">Max Sugars (g):</label>
+            <input type="number" id="max-sugars" placeholder="e.g., 50" />
+        </div>
+        <div>
+            <label for="min-protein">Max Protein (g):</label>
+            <input type="number" id="min-protein" placeholder="e.g., 10" />
+        </div>
+        <div>
+            <label for="max-total-fat">Max Total Fat (g):</label>
+            <input type="number" id="max-total-fat" placeholder="e.g., 70" />
+        </div>
+        <div>
+            <input type="number" id="calorie-input" placeholder="Enter calorie target">
+            <button id="generate-button">Generate Menu</button>
+        </div>
+        <div>
+            <label for="food-searcher">Food Searcher:</label>
+            <input type="text" id="food-searcher" placeholder="Enter Food You Wish to Search For">
+            <button id="food-button">Search for Food</button>
+        </div>
+        <button class="hide-button">Hide Category</button>
+    </div>
+    
+    <div id="nutrition-facts">
+        <h2>Random Menu Nutrition Facts:</h2>
+        <p>Sodium: <span id="total-sodium">0</span> mg</p>
+        <p>Cholesterol: <span id="total-cholesterol">0</span> mg</p>
+        <p>Sugars: <span id="total-sugars">0</span> g</p>
+        <p>Protein: <span id="total-protein">0</span> g</p>
+        <p>Total Fat: <span id="total-fat">0</span> g</p>
+        <h2>Total Calories: <span id="total-calories">0</span></h2>
+        <button class="hide-button">Hide Category</button>
+    </div>
+
+    <div id="currently-ate">
+        <h2>Currently Ate:</h2>
+        <div id="currently-ate-items"></div>
+        <h3>Total Nutrition Facts:</h3>
+        <p id="total-ate-calories">Calories: 0</p>
+        <p id="total-ate-sodium">Sodium: 0mg</p>
+        <p id="total-ate-cholesterol">Cholesterol: 0mg</p>
+        <p id="total-ate-sugars">Sugars: 0g</p>
+        <p id="total-ate-protein">Protein: 0g</p>
+        <p id="total-ate-fat">Total Fat: 0g</p>
+        <button class="hide-button">Hide Category</button>
+    </div>
+    
+    <div id="menu-container">
+    </div>
+
+    <script src="frontend/frontend.js"></script>
+</body>
+</html>
