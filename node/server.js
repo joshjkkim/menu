@@ -20,99 +20,106 @@ async function scrapeMenu(diningHall) {
     const url = diningHallURLs[diningHall];
 
     if (!url) {
-        throw new Error('Invalid dining hall');
+        throw new Error('Invalid dining hall: ' + diningHall);
     }
 
-    const browser = await puppeteer.launch();
-    const page = await browser.newPage();
+    try {
+        const browser = await puppeteer.launch({
+            headless: "new",
+            defaultViewport: null,
+            executablePath: '/usr/bin/google-chrome',
+            args: ['--no-sandbox'],
+        });
+      
+        const page = await browser.newPage();
     
-    await page.goto(url);
-    
-    await page.waitForSelector('.courses_wrapper');
+        await page.goto(url, { waitUntil: 'domcontentloaded' });
+        await page.waitForSelector('.courses_wrapper'); // Wait for the content to load
 
-    const menuItems = [];
+        const menuItems = [];
+        const foodItems = await page.$$eval('.courses_wrapper .items li', food => {
+            return food.map(item => {
+                const foodName = item.querySelector('.item-name') ? item.querySelector('.item-name').textContent.trim() : 'Unknown';
+                const traits = Array.from(item.querySelectorAll('.traits li')).map(li => li.textContent.trim());
 
-    const foodItems = await page.$$eval('.courses_wrapper .items li', food => {
-        return food.map(item => {
-            const foodName = item.querySelector('.item-name') ? item.querySelector('.item-name').textContent.trim() : 'Unknown';
-            const traits = Array.from(item.querySelectorAll('.traits li')).map(li => li.textContent.trim());
+                const nutritionDiv = item.querySelector('.nutrition');
+                let calories = 'N/A'; 
+                let contains = []; 
+                let sodium = 'N/A'; 
+                let cholesterol = 'N/A';
+                let sugars = 'N/A'; 
+                let protein = 'N/A'; 
+                let totalFat = 'N/A'; 
 
-            const nutritionDiv = item.querySelector('.nutrition');
-            let calories = 'N/A'; 
-            let contains = []; 
-            let sodium = 'N/A'; 
-            let cholesterol = 'N/A';
-            let sugars = 'N/A'; 
-            let protein = 'N/A'; 
-            let totalFat = 'N/A'; 
-
-            if (nutritionDiv) {
-                const calorieRow = nutritionDiv.querySelector('.portion-calories');
-                if (calorieRow) {
-                    const calorieText = calorieRow.textContent;
-                    const match = calorieText.match(/Calories\s*(\d+)/); 
-                    calories = match ? match[1] : 'N/A'; 
-                }
-                
-                const allergensDiv = nutritionDiv.querySelector('.allergens');
-                if (allergensDiv) {
-                    const allergens = allergensDiv.querySelectorAll('li');
-                    contains = Array.from(allergens).map(allergen => allergen.textContent.trim());
-                }
-
-                const nutritionalRows = nutritionDiv.querySelectorAll('td'); 
-
-                nutritionalRows.forEach(row => {
-                    const nutrientText = row.textContent.trim();
-                    const match = nutrientText.match(/(Sodium|Cholesterol|Sugars|Protein|Total Fat)\s*(\d+g?)/);
-                    
-                    if (match) {
-                        const nutrientName = match[1];
-                        const nutrientValue = match[2];
-                        
-                        switch (nutrientName) {
-                            case 'Sodium':
-                                sodium = nutrientValue; 
-                                break;
-                            case 'Cholesterol':
-                                cholesterol = nutrientValue; 
-                                break;
-                            case 'Sugars':
-                                sugars = nutrientValue; 
-                                break;
-                            case 'Protein':
-                                protein = nutrientValue;
-                                break;
-                            case 'Total Fat':
-                                totalFat = nutrientValue; 
-                                break;
-                        }
+                if (nutritionDiv) {
+                    const calorieRow = nutritionDiv.querySelector('.portion-calories');
+                    if (calorieRow) {
+                        const calorieText = calorieRow.textContent;
+                        const match = calorieText.match(/Calories\s*(\d+)/); 
+                        calories = match ? match[1] : 'N/A'; 
                     }
-                });
-            }
+                    
+                    const allergensDiv = nutritionDiv.querySelector('.allergens');
+                    if (allergensDiv) {
+                        const allergens = allergensDiv.querySelectorAll('li');
+                        contains = Array.from(allergens).map(allergen => allergen.textContent.trim());
+                    }
 
-            if (foodName !== 'Unknown' && traits.length > 0) {
-                return { 
-                    food: foodName,
-                    traits: traits,
-                    calories: calories,
-                    contains: contains, 
-                    sodium: sodium,
-                    cholesterol: cholesterol, 
-                    sugars: sugars,
-                    protein: protein, 
-                    totalFat: totalFat 
-                };
-            }
-            return null; 
-        }).filter(item => item !== null); 
-    });
+                    const nutritionalRows = nutritionDiv.querySelectorAll('td'); 
 
-    menuItems.push(...foodItems);
+                    nutritionalRows.forEach(row => {
+                        const nutrientText = row.textContent.trim();
+                        const match = nutrientText.match(/(Sodium|Cholesterol|Sugars|Protein|Total Fat)\s*(\d+g?)/);
+                        
+                        if (match) {
+                            const nutrientName = match[1];
+                            const nutrientValue = match[2];
+                            
+                            switch (nutrientName) {
+                                case 'Sodium':
+                                    sodium = nutrientValue; 
+                                    break;
+                                case 'Cholesterol':
+                                    cholesterol = nutrientValue; 
+                                    break;
+                                case 'Sugars':
+                                    sugars = nutrientValue; 
+                                    break;
+                                case 'Protein':
+                                    protein = nutrientValue;
+                                    break;
+                                case 'Total Fat':
+                                    totalFat = nutrientValue; 
+                                    break;
+                            }
+                        }
+                    });
+                }
 
-    console.log('Menu Items:', menuItems); 
-    await browser.close();
-    return menuItems;
+                if (foodName !== 'Unknown' && traits.length > 0) {
+                    return { 
+                        food: foodName,
+                        traits: traits,
+                        calories: calories,
+                        contains: contains, 
+                        sodium: sodium,
+                        cholesterol: cholesterol, 
+                        sugars: sugars,
+                        protein: protein, 
+                        totalFat: totalFat 
+                    };
+                }
+                return null; 
+            }).filter(item => item !== null); 
+        });
+
+        menuItems.push(...foodItems);
+        await browser.close();
+        return menuItems;
+    } catch (error) {
+        console.error('Error scraping menu:', error);
+        throw new Error('Failed to scrape menu: ' + error.message);
+    }
 }
 
 app.get('/menu', async (req, res) => {
@@ -127,6 +134,6 @@ app.get('/menu', async (req, res) => {
     }
 });
 
-app.listen(PORT, () => {
-    console.log(`Server is running on http://localhost:${PORT}`);
+app.listen(PORT, '0.0.0.0', () => {
+    console.log(`Server is running on http://0.0.0.0:${PORT}`);
 });
